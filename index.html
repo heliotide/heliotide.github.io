@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Heliotide – Molnlösningar & Microsoft-konsulter</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
@@ -432,7 +433,7 @@
     </div> 
     <span class="logo-name">Heliotide</span>
     -->
-    <img src="img/logo_transparent.png" width="100" />
+    <img src="images/logo_transparent.png" width="100" />
 
   </a>
 
@@ -489,7 +490,7 @@
 
   <!-- Professional people image — speaker/presentation -->
   <div class="hero-image">
-    <img src="img/clouds.jpg" alt="Cloud" loading="eager" />
+    <img src="images/clouds.jpg" alt="Cloud" loading="eager" />
   </div>
 </section>
 
@@ -552,7 +553,7 @@
   <div class="about-inner">
     <div class="about-images reveal">
       <div class="about-img">
-        <img src="img/people-working.jpg" alt="Working" />
+        <img src="images/people-working.jpg" alt="Working" />
       </div>
     </div>
 
@@ -726,7 +727,7 @@
     <!-- Stockholm image -->
     <div class="reveal reveal-d1">
       <div class="contact-image">
-        <img src="img/stockholm.jpg" alt="Stockholm waterfront" />
+        <img src="images/stockholm.jpg" alt="Stockholm waterfront" />
       </div>
     </div>
   </div>
@@ -735,7 +736,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">
-    <img src="logo_transparent.png" width="100" />
+    <img src="images/logo_transparent.png" width="100" />
   </div>
   <div class="footer-links">
     <a href="#services" data-sv="Tjänster" data-en="Services" data-es="Servicios">Tjänster</a>
@@ -775,33 +776,45 @@
     return 'en';
   }
 
-  function setLang(lang) {
-    currentLang = lang;
-    document.documentElement.lang = lang;
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
 
-    // Update all translatable elements
-    document.querySelectorAll('[data-sv]').forEach(el => {
-      const text = el.getAttribute('data-' + lang) || el.getAttribute('data-en') || '';
-      if (text) el.textContent = text;
-    });
+  // Update all translatable elements
+  document.querySelectorAll('[data-sv]').forEach(el => {
+    const text = el.getAttribute('data-' + lang) || el.getAttribute('data-en') || '';
+    if (text) el.textContent = text;
+  });
 
-    // Update dropdown UI
-    const meta = LANG_META[lang];
-    document.getElementById('langCurrentFlag').textContent = meta.flag;
-    document.getElementById('langCurrentLabel').textContent = meta.label;
-    ['sv','en','es'].forEach(l => {
-      document.getElementById('opt' + l.charAt(0).toUpperCase() + l.slice(1)).classList.toggle('active', l === lang);
-    });
+  // Update dropdown UI
+  const meta = LANG_META[lang];
 
-    document.getElementById('footerCopy').textContent = meta.copy;
-    document.title = meta.title;
+  const flagEl = document.getElementById('langCurrentFlag');
+  if (flagEl) flagEl.textContent = meta.flag;
 
-    // Placeholders
-    const ph = PLACEHOLDERS[lang];
-    Object.entries(ph).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.placeholder = val; });
+  const labelEl = document.getElementById('langCurrentLabel');
+  if (labelEl) labelEl.textContent = meta.label;
 
-    closeLangDropdown();
-  }
+  ['sv', 'en', 'es'].forEach(l => {
+    const optId = 'opt' + l.charAt(0).toUpperCase() + l.slice(1);
+    const optEl = document.getElementById(optId);
+    if (optEl) optEl.classList.toggle('active', l === lang);
+  });
+
+  const footerCopy = document.getElementById('footerCopy');
+  if (footerCopy) footerCopy.textContent = meta.copy;
+
+  document.title = meta.title;
+
+  // Placeholders (only relevant if signup form inputs exist in the DOM)
+  const ph = PLACEHOLDERS[lang];
+  Object.entries(ph).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.placeholder = val;
+  });
+
+  closeLangDropdown();
+}
 
   function toggleLangDropdown() {
     document.getElementById('langWrapper').classList.toggle('open');
