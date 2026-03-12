@@ -85,10 +85,18 @@
     .lang-chevron { font-size: 0.6rem; transition: transform 0.2s; opacity: 0.6; }
     .lang-wrapper.open .lang-chevron { transform: rotate(180deg); }
     .lang-dropdown {
-      display: none; position: absolute; top: calc(100% + 6px); right: 0;
-      background: var(--surface3); border: 1px solid var(--border2);
-      border-radius: var(--radius); min-width: 140px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.4); z-index: 300; overflow: hidden;
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 6px);
+      top: auto;
+      left: 0;              /* or right: 0 depending on position in footer */
+      background: var(--surface3);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      min-width: 140px;
+      box-shadow: 0 -12px 32px rgba(0,0,0,0.4);  /* shadow flipped upward */
+      z-index: 300;
+      overflow: hidden;
     }
     .lang-wrapper.open .lang-dropdown { display: block; }
     .lang-option {
@@ -425,16 +433,7 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <!-- <div class="logo-mark">
-      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-        <circle cx="7.5" cy="7.5" r="3.2" fill="#06101c"/>
-        <circle cx="7.5" cy="7.5" r="6.2" stroke="#06101c" stroke-width="0.9" opacity="0.45"/>
-      </svg>
-    </div> 
-    <span class="logo-name">Heliotide</span>
-    -->
     <img src="images/logo_transparent.png" width="100" />
-
   </a>
 
   <ul class="nav-links">
@@ -445,18 +444,6 @@
   </ul>
 
   <div class="nav-right">
-    <div class="lang-wrapper" id="langWrapper">
-      <button class="lang-select-btn" id="langSelectBtn" onclick="toggleLangDropdown()">
-        <span id="langCurrentFlag">🇸🇪</span>
-        <span id="langCurrentLabel">Svenska</span>
-        <span class="lang-chevron">▼</span>
-      </button>
-      <div class="lang-dropdown" id="langDropdown">
-        <div class="lang-option active" onclick="setLang('sv')" id="optSv"><span class="lang-flag">🇸🇪</span> Svenska</div>
-        <div class="lang-option" onclick="setLang('en')" id="optEn"><span class="lang-flag">🇬🇧</span> English</div>
-        <div class="lang-option" onclick="setLang('es')" id="optEs"><span class="lang-flag">🇪🇸</span> Español</div>
-      </div>
-    </div>
     <a href="#contact" class="btn btn-primary" data-sv="Kontakta oss" data-en="Get in touch" data-es="Contáctenos">Kontakta oss</a>
     <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
@@ -735,9 +722,21 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">
-    <img src="images/logo_transparent.png" width="100" />
+    <div class="lang-wrapper" id="langWrapper">
+    <button class="lang-select-btn" id="langSelectBtn" onclick="toggleLangDropdown()">
+      <span id="langCurrentFlag">🇸🇪</span>
+      <span id="langCurrentLabel">Svenska</span>
+      <!-- <span class="lang-chevron">▼</span> -->
+    </button>
+    <div class="lang-dropdown" id="langDropdown">
+      <div class="lang-option active" onclick="setLang('sv')" id="optSv"><span class="lang-flag">🇸🇪</span> Svenska</div>
+      <div class="lang-option" onclick="setLang('en')" id="optEn"><span class="lang-flag">🇬🇧</span> English</div>
+      <div class="lang-option" onclick="setLang('es')" id="optEs"><span class="lang-flag">🇪🇸</span> Español</div>
+    </div>
   </div>
+  <!-- <div class="footer-logo">
+    <img src="images/logo_transparent.png" width="100" />
+  </div> -->
   <div class="footer-links">
     <a href="#services" data-sv="Tjänster" data-en="Services" data-es="Servicios">Tjänster</a>
     <a href="#products" data-sv="Produkter" data-en="Products" data-es="Productos">Produkter</a>
