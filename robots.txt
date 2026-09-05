@@ -1,0 +1,17 @@
+User-agent: GPTBot
+Disallow: /privacy-policy
+
+User-agent: ClaudeBot
+Disallow: /privacy-policy
+
+User-agent: Google-Extended
+Disallow: /privacy-policy
+
+User-agent: CCBot
+Disallow: /privacy-policy
+
+User-agent: PerplexityBot
+Disallow: /privacy-policy
+
+User-agent: Bytespider
+Disallow: /privacy-policy

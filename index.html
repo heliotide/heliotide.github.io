@@ -408,7 +408,6 @@
         <div class="contact-options">
 
           <div class="contact-option">
-            <!-- <div class="contact-field-label">Maila oss direkt</div> -->
             <div class="contact-email-block">
               <a href="mailto:hello@heliotide.com" class="contact-email-address">hello@heliotide.com</a>
             </div>
@@ -419,12 +418,16 @@
           </div>
 
           <div class="contact-option">
-            <!-- <div class="contact-field-label">Fyll i formuläret</div> -->
             <form action="/kontakt" method="POST" class="contact-form">
-              <input type="email" name="email" class="form-input" placeholder="Din e-postadress" required>
-              <textarea name="message" class="form-input form-textarea" placeholder="Ditt meddelande"
-                required></textarea>
-              <button type="submit" class="btn btn-primary">Skicka meddelande</button>
+              <input type="email" name="email" id="contactEmail" class="form-input" placeholder="Din e-postadress"
+                required>
+
+              <textarea name="message" id="contactMessage" class="form-input form-textarea"
+                placeholder="Ditt meddelande" required></textarea>
+
+              <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+              <button type="submit" class="btn btn-primary" data-en="Send message" data-sv="Skicka meddelande">Skicka meddelande</button>
             </form>
           </div>
 
@@ -484,7 +487,7 @@
       <a href="#services" data-sv="Tjänster" data-en="Services" data-es="Servicios">Tjänster</a>
       <a href="#products" data-sv="Produkter" data-en="Products" data-es="Productos">Produkter</a>
       <a href="#about" data-sv="Om oss" data-en="About" data-es="Nosotros">Om oss</a>
-      <a href="#contact" data-sv="Kontakt" data-en="Contact" data-es="Contacto">Kontakt</a>
+      <a href="privacy-policy.html" data-sv="Privacy" data-en="Privacy" data-es="Privacidad">Privacy</a>
     </div>
     <!-- <div class="footer-copy" id="footerCopy">© 2026 Heliotide.</div>k -->
   </footer>
@@ -493,15 +496,33 @@
     let currentLang = 'sv';
 
     const LANG_META = {
-      sv: { flag: '🇸🇪', label: 'Svenska', copy: '© 2026 Heliotide', title: 'Heliotide – Molnlösningar & Microsoft-konsulter' },
-      en: { flag: '🇬🇧', label: 'English', copy: '© 2026 Heliotide', title: 'Heliotide – Cloud Solutions & Microsoft Consulting' },
-      es: { flag: '🇪🇸', label: 'Español', copy: '© 2026 Heliotide', title: 'Heliotide – Soluciones en la nube y consultoría Microsoft' }
+      sv: { flag: '🇸🇪', label: 'Svenska', copy: '© 2026 Heliotide', title: 'Heliotide – Cloud-konsulter' },
+      en: { flag: '🇬🇧', label: 'English', copy: '© 2026 Heliotide', title: 'Heliotide – Cloud Consulting' },
+      es: { flag: '🇪🇸', label: 'Español', copy: '© 2026 Heliotide', title: 'Heliotide – Consultoría Cloud' }
     };
 
     const PLACEHOLDERS = {
-      sv: { signupName: 'Anna Svensson', signupCompany: 'Företaget AB', signupEmail: 'anna@foretaget.se' },
-      en: { signupName: 'Anna Svensson', signupCompany: 'Company Ltd', signupEmail: 'anna@company.com' },
-      es: { signupName: 'Ana García', signupCompany: 'Empresa S.L.', signupEmail: 'ana@empresa.es' }
+      sv: {
+        signupName: 'Anna Svensson',
+        signupCompany: 'Företaget AB',
+        signupEmail: 'anna@foretaget.se',
+        contactEmail: 'Din e-postadress',
+        contactMessage: 'Ditt meddelande'
+      },
+      en: {
+        signupName: 'Anna Svensson',
+        signupCompany: 'Company Ltd',
+        signupEmail: 'anna@company.com',
+        contactEmail: 'Your email address',
+        contactMessage: 'Your message'
+      },
+      es: {
+        signupName: 'Ana García',
+        signupCompany: 'Empresa S.L.',
+        signupEmail: 'ana@empresa.es',
+        contactEmail: 'Tu dirección de correo',
+        contactMessage: 'Tu mensaje'
+      }
     };
 
     function detectLanguage() {

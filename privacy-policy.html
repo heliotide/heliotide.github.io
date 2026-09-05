@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidad – Heliotide</title>
+<style>
+    :root {
+      --bg:        #06101c;
+      --surface:   #0b1929;
+      --surface2:  #0f2035;
+      --surface3:  #152740;
+      --ink:       #f0f5fa;
+      --ink-mid:   #c8d8e8;
+      --ink-muted: #7a99b8;
+      --accent:    #2dd4bf;
+      --accent2:   #60c8f0;
+      --accent-dim: rgba(45,212,191,0.13);
+      --border:    rgba(255,255,255,0.09);
+      --border2:   rgba(255,255,255,0.14);
+      --radius:    5px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 68px;
+      background: rgba(6,16,28,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: inline-block;
+    }
+    .logo-name { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+
+    .lang-wrapper { position: relative; }
+    .lang-select-btn {
+      display: flex; align-items: center; gap: 6px;
+      border: 1px solid var(--border2); border-radius: var(--radius);
+      background: var(--surface2); padding: 7px 12px;
+      font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--ink-mid); cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.15s;
+      white-space: nowrap;
+    }
+    .lang-select-btn:hover { border-color: var(--accent); color: var(--ink); }
+    .lang-chevron { font-size: 0.6rem; transition: transform 0.2s; opacity: 0.6; }
+    .lang-wrapper.open .lang-chevron { transform: rotate(180deg); }
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: var(--surface3);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      min-width: 140px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+      z-index: 300;
+      overflow: hidden;
+    }
+    .lang-wrapper.open .lang-dropdown { display: block; }
+    .lang-option {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; font-size: 0.85rem; font-weight: 500;
+      color: var(--ink-muted); cursor: pointer; transition: all 0.12s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .lang-option:hover { background: var(--accent-dim); color: var(--ink); }
+    .lang-option.active { color: var(--accent); background: var(--accent-dim); }
+    .lang-flag { font-size: 1rem; }
+
+    .policy-header {
+      padding: 130px 5vw 50px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .policy-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.13em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 18px;
+    }
+    .eyebrow-line { width: 24px; height: 1.5px; background: var(--accent); flex-shrink: 0; }
+    .policy-header h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 14px;
+    }
+    .policy-updated { font-size: 0.85rem; color: var(--ink-muted); }
+
+    .policy-wrap {
+      max-width: 780px; margin: 0 auto; padding: 70px 5vw 120px;
+    }
+
+    section.policy-section { margin-bottom: 56px; }
+    .policy-section h2 {
+      font-size: 1.4rem; font-weight: 700; letter-spacing: -0.01em;
+      margin-bottom: 18px; color: var(--ink);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .policy-section h2::before {
+      content: ''; width: 18px; height: 1.5px; background: var(--accent); flex-shrink: 0;
+    }
+    .policy-section h3 {
+      font-size: 1.05rem; font-weight: 700; margin: 24px 0 10px; color: var(--ink);
+    }
+    .policy-section p, .policy-section li {
+      font-size: 0.95rem; color: var(--ink-mid); line-height: 1.8;
+    }
+    .policy-section p { margin-bottom: 14px; }
+    .policy-section ul { padding-left: 20px; margin-bottom: 14px; }
+    .policy-section li { margin-bottom: 8px; }
+    .policy-section a { color: var(--accent); text-decoration: none; }
+    .policy-section a:hover { color: #5eead4; text-decoration: underline; }
+
+    .placeholder {
+      color: var(--accent2);
+      background: rgba(96,200,240,0.1);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+
+    .subprocessor-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 20px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 0.85rem;
+    }
+    .subprocessor-table th {
+      background: var(--surface3);
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 14px;
+    }
+    .subprocessor-table td {
+      padding: 10px 14px;
+      border-top: 1px solid var(--border);
+      color: var(--ink-mid);
+      vertical-align: top;
+    }
+
+    .value-item {
+      display: flex; gap: 16px; padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .value-item:first-child { border-top: 1px solid var(--border); }
+    .value-icon {
+      font-size: 1rem; width: 34px; height: 34px;
+      background: var(--accent-dim); border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .value-content h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 3px; color: var(--ink); }
+    .value-content p { font-size: 0.87rem; margin: 0; }
+
+    .contact-block {
+      margin-top: 12px; padding: 22px 26px; background: var(--surface2);
+      border: 1px solid var(--border2); border-radius: 10px;
+    }
+    .contact-block p { margin-bottom: 4px; font-size: 0.9rem; }
+
+    footer.policy-footer {
+      background: #040c15; border-top: 1px solid var(--border);
+      padding: 30px 5vw; text-align: center;
+      font-size: 0.8rem; color: var(--ink-muted);
+    }
+
+    [data-lang-block] { display: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <span class="logo-mark"></span>
+    <span class="logo-name">Heliotide</span>
+  </a>
+
+  <div class="nav-right">
+    <div class="lang-wrapper" id="langWrapper">
+      <button class="lang-select-btn" onclick="toggleLangDropdown()">
+        <span id="langCurrentFlag">🇪🇸</span>
+        <span id="langCurrentLabel">Español</span>
+        <span class="lang-chevron">▾</span>
+      </button>
+      <div class="lang-dropdown">
+        <div class="lang-option" id="optSv" onclick="setLang('sv')">
+          <span class="lang-flag">🇸🇪</span> Svenska
+        </div>
+        <div class="lang-option" id="optEn" onclick="setLang('en')">
+          <span class="lang-flag">🇬🇧</span> English
+        </div>
+        <div class="lang-option" id="optEs" onclick="setLang('es')">
+          <span class="lang-flag">🇪🇸</span> Español
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="policy-header">
+  <div class="policy-eyebrow" data-en="Legal" data-es="Legal"><span class="eyebrow-line"></span>Legal</div>
+  <h1 data-en="Privacy Policy" data-es="Política de Privacidad">Política de Privacidad</h1>
+  <div class="policy-updated"><span data-en="Last updated:" data-es="Última actualización:">Última actualización:</span> <span class="placeholder">[FECHA]</span></div>
+</div>
+
+<div class="policy-wrap">
+
+  <section class="policy-section">
+    <h2 data-en="1. Who we are" data-es="1. Quiénes somos">1. Quiénes somos</h2>
+    <p data-en="This website, www.heliotide.com (the &quot;Website&quot;), is operated by Heliotide, S.L.U., a sociedad limitada unipersonal incorporated under the laws of Spain, with registered address at [registered address, postal code, city, province], NIF [NIF/CIF number], registered with the [Mercantile Registry of ___, volume ___, page ___, sheet ___] (&quot;Heliotide&quot;, &quot;we&quot;, &quot;us&quot;, &quot;our&quot;)."
+       data-es="Este sitio web, www.heliotide.com (el &quot;Sitio Web&quot;), está operado por Heliotide, S.L.U., sociedad limitada unipersonal constituida conforme a la legislación española, con domicilio social en Cl Las Pitas 6, 35100 San Bartolomé de Tirajana, Las Palmas, NIF 26730382, inscrita en el Registro Mercantil de Las Palmas, tomo ___, folio ___, hoja ___] (&quot;Heliotide&quot;, &quot;nosotros&quot;).">
+      Este sitio web, www.heliotide.com (el "Sitio Web"), está operado por <span class="placeholder">[Heliotide, S.L.U. — denominación social completa]</span>, sociedad limitada unipersonal constituida conforme a la legislación española, con domicilio social en <span class="placeholder">[dirección registrada, código postal, ciudad, provincia]</span>, NIF <span class="placeholder">[número de NIF/CIF]</span>, inscrita en el <span class="placeholder">[Registro Mercantil de ___, tomo ___, folio ___, hoja ___]</span> ("Heliotide", "nosotros").
+    </p>
+    <p data-en="For the purposes of the General Data Protection Regulation (Regulation (EU) 2016/679, &quot;GDPR&quot;) and the Spanish Organic Law 3/2018 on Data Protection and Digital Rights Guarantee (&quot;LOPDGDD&quot;), Heliotide acts as the data controller of the personal data described in this policy."
+       data-es="A los efectos del Reglamento General de Protección de Datos (Reglamento (UE) 2016/679, &quot;RGPD&quot;) y de la Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales (&quot;LOPDGDD&quot;), Heliotide actúa como responsable del tratamiento de los datos personales descritos en esta política.">
+      A los efectos del Reglamento General de Protección de Datos (Reglamento (UE) 2016/679, "RGPD") y de la Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales ("LOPDGDD"), Heliotide actúa como <strong>responsable del tratamiento</strong> de los datos personales descritos en esta política.
+    </p>
+    <p data-en="You can contact us regarding any privacy matter at hello@heliotide.com."
+       data-es="Puede contactarnos sobre cualquier cuestión relativa a privacidad en hello@heliotide.com.">
+      Puede contactarnos sobre cualquier cuestión relativa a privacidad en
+      <a href="mailto:hello@heliotide.com">hello@heliotide.com</a>.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2 data-en="2. What data we collect" data-es="2. Qué datos recopilamos">2. Qué datos recopilamos</h2>
+    <p data-en="We collect personal data only where you actively provide it to us, specifically:"
+       data-es="Solo recopilamos datos personales cuando usted nos los facilita voluntariamente, en concreto:">
+      Solo recopilamos datos personales cuando usted nos los facilita voluntariamente, en concreto:
+    </p>
+
+    <div class="value-item">
+      <div class="value-icon">✉️</div>
+      <div class="value-content">
+        <h4 data-en="Contact form submissions" data-es="Envíos del formulario de contacto">Envíos del formulario de contacto</h4>
+        <p data-en="When you use the contact form on this Website, we collect your email address and the content of your message. Providing this information is voluntary, but necessary for us to respond to your enquiry."
+           data-es="Al utilizar el formulario de contacto de este Sitio Web, recopilamos su dirección de correo electrónico y el contenido de su mensaje. Facilitar esta información es voluntario, pero necesario para poder responder a su consulta.">
+          Al utilizar el formulario de contacto de este Sitio Web, recopilamos su dirección de correo electrónico y el contenido de su mensaje. Facilitar esta información es voluntario, pero necesario para poder responder a su consulta.
+        </p>
+      </div>
+    </div>
+
+    <div class="value-item">
+      <div class="value-icon">⚙️</div>
+      <div class="value-content">
+        <h4 data-en="Technical data collected automatically" data-es="Datos técnicos recopilados automáticamente">Datos técnicos recopilados automáticamente</h4>
+        <p data-en="Our form processing provider may automatically collect your IP address, submission timestamp, and similar technical metadata as part of delivering and securing the contact form service, as described in Section 4 below."
+           data-es="Nuestro proveedor de procesamiento de formularios puede recopilar automáticamente su dirección IP, la marca temporal del envío y metadatos técnicos similares, como parte de la prestación y protección del servicio de formulario, según se describe en la Sección 4.">
+          Nuestro proveedor de procesamiento de formularios puede recopilar automáticamente su dirección IP, la marca temporal del envío y metadatos técnicos similares, como parte de la prestación y protección del servicio de formulario, según se describe en la Sección 4.
+        </p>
+      </div>
+    </div>
+
+    <p data-en="We do not use cookies or similar tracking technologies on this Website beyond what is strictly necessary for its basic functioning [confirm/amend if analytics or other cookies are used]."
+       data-es="No utilizamos cookies ni tecnologías de seguimiento similares en este Sitio Web, más allá de lo estrictamente necesario para su funcionamiento básico [confirmar/modificar si se utilizan cookies analíticas u otras].">
+      No utilizamos cookies ni tecnologías de seguimiento similares en este Sitio Web, más allá de lo estrictamente necesario para su funcionamiento básico <span class="placeholder">[confirmar/modificar si se utilizan cookies analíticas u otras]</span>.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2 data-en="3. Why we process your data, and our legal basis" data-es="3. Por qué tratamos sus datos y base jurídica">3. Por qué tratamos sus datos y base jurídica</h2>
+    <ul>
+      <li data-en="To respond to your enquiry — legal basis: performance of pre-contractual steps taken at your request, or our legitimate interest in responding to unsolicited enquiries (Art. 6(1)(b) and 6(1)(f) GDPR)."
+          data-es="Para responder a su consulta — base jurídica: aplicación de medidas precontractuales adoptadas a petición suya, o nuestro interés legítimo en responder a consultas no solicitadas (art. 6.1.b y 6.1.f RGPD).">
+        <strong>Para responder a su consulta</strong> — base jurídica: aplicación de medidas precontractuales adoptadas a petición suya, o nuestro interés legítimo en responder a consultas no solicitadas (art. 6.1.b y 6.1.f RGPD).
+      </li>
+      <li data-en="To keep our Website and contact form secure, including spam and abuse prevention — legal basis: legitimate interest (Art. 6(1)(f) GDPR)."
+          data-es="Para mantener la seguridad de nuestro Sitio Web y formulario de contacto, incluyendo la prevención de spam y abusos — base jurídica: interés legítimo (art. 6.1.f RGPD).">
+        <strong>Para mantener la seguridad de nuestro Sitio Web y formulario de contacto</strong>, incluyendo la prevención de spam y abusos — base jurídica: interés legítimo (art. 6.1.f RGPD).
+      </li>
+    </ul>
+    <p data-en="We do not use your contact form data for marketing or newsletters, and we do not sell or share it with third parties for their own commercial purposes."
+       data-es="No utilizamos los datos del formulario de contacto con fines de marketing o boletines informativos, ni los vendemos ni compartimos con terceros para fines comerciales propios de estos.">
+      No utilizamos los datos del formulario de contacto con fines de marketing o boletines informativos, ni los vendemos ni compartimos con terceros para fines comerciales propios de estos.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2 data-en="4. Who processes your data on our behalf" data-es="4. Quién trata sus datos por nuestra cuenta">4. Quién trata sus datos por nuestra cuenta</h2>
+    <p data-en="To operate our contact form without maintaining our own backend infrastructure, we use a third-party form-processing service, [Web3Forms, operated by Web3Creative], which acts as our data processor under a Data Processing Agreement incorporating the Standard Contractual Clauses. That provider in turn relies on further sub-processors, falling into the following categories, to deliver the service:"
+       data-es="Para operar nuestro formulario de contacto sin mantener nuestra propia infraestructura de backend, utilizamos un servicio de procesamiento de formularios de terceros, [Web3Forms, operado por Web3Creative], que actúa como nuestro encargado del tratamiento en virtud de un Contrato de Encargado del Tratamiento que incorpora las Cláusulas Contractuales Tipo. Dicho proveedor recurre, a su vez, a subencargados que se agrupan en las siguientes categorías para prestar el servicio:">
+      Para operar nuestro formulario de contacto sin mantener nuestra propia infraestructura de backend, utilizamos un servicio de procesamiento de formularios de terceros, <span class="placeholder">[Web3Forms, operado por Web3Creative]</span>, que actúa como nuestro <strong>encargado del tratamiento</strong> en virtud de un Contrato de Encargado del Tratamiento que incorpora las Cláusulas Contractuales Tipo. Dicho proveedor recurre, a su vez, a subencargados que se agrupan en las siguientes categorías para prestar el servicio:
+    </p>
+
+    <div data-lang-block="en">
+      <table class="subprocessor-table">
+        <tr><th>Category</th><th>Purpose</th><th>Location</th></tr>
+        <tr><td>Cloud hosting &amp; infrastructure providers</td><td>Compute, email delivery, and data storage underlying the form service</td><td>European Union and United States</td></tr>
+        <tr><td>Content delivery / edge security providers</td><td>Network routing, DNS, and firewall protection for submission endpoints</td><td>Global edge network</td></tr>
+        <tr><td>Spam and abuse detection providers</td><td>Automated assessment of submissions to block spam and abuse (may receive the submitter's IP address and email address)</td><td>United States</td></tr>
+      </table>
+    </div>
+    <div data-lang-block="es">
+      <table class="subprocessor-table">
+        <tr><th>Categoría</th><th>Finalidad</th><th>Ubicación</th></tr>
+        <tr><td>Proveedores de alojamiento e infraestructura en la nube</td><td>Computación, envío de correo electrónico y almacenamiento de datos que soportan el servicio de formulario</td><td>Unión Europea y Estados Unidos</td></tr>
+        <tr><td>Proveedores de distribución de contenido / seguridad perimetral</td><td>Enrutamiento de red, DNS y protección mediante cortafuegos de los puntos de recepción de envíos</td><td>Red global de distribución</td></tr>
+        <tr><td>Proveedores de detección de spam y abusos</td><td>Evaluación automatizada de los envíos para bloquear spam y abusos (pueden recibir la dirección IP y el correo electrónico de quien envía el formulario)</td><td>Estados Unidos</td></tr>
+      </table>
+    </div>
+
+    <p style="font-size:0.82rem; color:var(--ink-muted);"
+       data-en="[Confirm these categories and locations against your form provider's currently published sub-processor list before publishing, and periodically thereafter — providers can add or change sub-processors over time even though the categories tend to be more stable.]"
+       data-es="[Confirmar estas categorías y ubicaciones frente a la lista de subencargados actualmente publicada por su proveedor de formularios antes de publicar esta política, y revisarlo periódicamente.]">
+      <span class="placeholder">[Confirmar estas categorías y ubicaciones frente a la lista de subencargados actualmente publicada por su proveedor de formularios antes de publicar esta política, y revisarlo periódicamente.]</span>
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2 data-en="5. International data transfers" data-es="5. Transferencias internacionales de datos">5. Transferencias internacionales de datos</h2>
+    <p data-en="Some of the sub-processors listed above are located, or may process data, outside the European Economic Area (EEA) — notably in the United States and India. Where this occurs, the transfer is governed by the Standard Contractual Clauses approved by the European Commission (Implementing Decision (EU) 2021/914), which are incorporated into our agreement with our form processing provider as the legal mechanism permitting such transfers under Chapter V of the GDPR."
+       data-es="Algunos de los subencargados mencionados están ubicados, o pueden tratar datos, fuera del Espacio Económico Europeo (EEE) — en particular en Estados Unidos e India. Cuando esto ocurre, la transferencia se rige por las Cláusulas Contractuales Tipo aprobadas por la Comisión Europea (Decisión de Ejecución (UE) 2021/914), incorporadas a nuestro acuerdo con el proveedor de procesamiento de formularios como mecanismo legal que permite dichas transferencias conforme al Capítulo V del RGPD.">
+      Algunos de los subencargados mencionados están ubicados, o pueden tratar datos, fuera del Espacio Económico Europeo (EEE) — en particular en Estados Unidos e India. Cuando esto ocurre, la transferencia se rige por las Cláusulas Contractuales Tipo aprobadas por la Comisión Europea (Decisión de Ejecución (UE) 2021/914), incorporadas a nuestro acuerdo con el proveedor de procesamiento de formularios como mecanismo legal que permite dichas transferencias conforme al Capítulo V del RGPD.
+    </p>
+    <p data-en="You may request further information about these safeguards, or a copy of the relevant contractual clauses, by contacting us at the address in Section 1."
+       data-es="Puede solicitar más información sobre estas garantías, o una copia de las cláusulas contractuales aplicables, contactándonos en la dirección indicada en la Sección 1.">
+      Puede solicitar más información sobre estas garantías, o una copia de las cláusulas contractuales aplicables, contactándonos en la dirección indicada en la Sección 1.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2 data-en="6. How long we keep your data" data-es="6. Cuánto tiempo conservamos sus datos">6. Cuánto tiempo conservamos sus datos</h2>
+    <p data-en="Contact form submissions are retained by our form processing provider for a maximum of [e.g. three years / confirm against your provider's actual retention terms] from submission, after which they are automatically deleted. We do not separately store copies of your submission beyond what is needed to respond to your enquiry and, where applicable, to comply with legal, accounting, or tax obligations."
+       data-es="Los envíos del formulario de contacto son conservados por nuestro proveedor de procesamiento de formularios durante un máximo de [p. ej. tres años / confirmar frente a los términos de conservación reales de su proveedor] desde su envío, tras lo cual se eliminan automáticamente. No conservamos copias adicionales de su envío más allá de lo necesario para responder a su consulta y, en su caso, para cumplir con obligaciones legales, contables o fiscales.">
+      Los envíos del formulario de contacto son conservados por nuestro proveedor de procesamiento de formularios durante un máximo de <span class="placeholder">[p. ej. tres años / confirmar frente a los términos de conservación reales de su proveedor]</span> desde su envío, tras lo cual se eliminan automáticamente. No conservamos copias adicionales de su envío más allá de lo necesario para responder a su consulta y, en su caso, para cumplir con obligaciones legales, contables o fiscales.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2 data-en="7. Your rights" data-es="7. Sus derechos">7. Sus derechos</h2>
+    <p data-en="Under the GDPR and the LOPDGDD, you have the right to:" data-es="En virtud del RGPD y la LOPDGDD, usted tiene derecho a:">En virtud del RGPD y la LOPDGDD, usted tiene derecho a:</p>
+    <ul>
+      <li data-en="Access the personal data we hold about you." data-es="Acceder a los datos personales que tratamos sobre usted."><strong>Acceder</strong> a los datos personales que tratamos sobre usted.</li>
+      <li data-en="Rectify inaccurate or incomplete data." data-es="Rectificar datos inexactos o incompletos."><strong>Rectificar</strong> datos inexactos o incompletos.</li>
+      <li data-en="Erase your data (&quot;right to be forgotten&quot;), subject to legal exceptions." data-es="Suprimir sus datos (&quot;derecho al olvido&quot;), salvo excepciones legales."><strong>Suprimir</strong> sus datos ("derecho al olvido"), salvo excepciones legales.</li>
+      <li data-en="Restrict or object to processing in certain circumstances." data-es="Limitar u oponerse al tratamiento en determinadas circunstancias."><strong>Limitar</strong> u <strong>oponerse</strong> al tratamiento en determinadas circunstancias.</li>
+      <li data-en="Data portability, where technically feasible." data-es="Portabilidad de los datos, cuando sea técnicamente posible."><strong>Portabilidad de los datos</strong>, cuando sea técnicamente posible.</li>
+      <li data-en="Withdraw consent at any time, where processing is based on consent, without affecting the lawfulness of processing carried out before withdrawal."
+          data-es="Retirar su consentimiento en cualquier momento, cuando el tratamiento se base en el consentimiento, sin que ello afecte a la licitud del tratamiento previo a su retirada.">
+        <strong>Retirar su consentimiento</strong> en cualquier momento, cuando el tratamiento se base en el consentimiento, sin que ello afecte a la licitud del tratamiento previo a su retirada.
+      </li>
+    </ul>
+    <p data-en="To exercise any of these rights, contact us at hello@heliotide.com. We may need to verify your identity before responding."
+       data-es="Para ejercer cualquiera de estos derechos, contáctenos en hello@heliotide.com. Podremos necesitar verificar su identidad antes de responder.">
+      Para ejercer cualquiera de estos derechos, contáctenos en
+      <a href="mailto:hello@heliotide.com">hello@heliotide.com</a>. Podremos necesitar verificar su identidad antes de responder.
+    </p>
+    <p data-en="You also have the right to lodge a complaint with the Spanish Data Protection Agency (Agencia Española de Protección de Datos, AEPD), C/ Jorge Juan, 6, 28001 Madrid, or via www.aepd.es, if you believe your data protection rights have been infringed."
+       data-es="Asimismo, tiene derecho a presentar una reclamación ante la Agencia Española de Protección de Datos (AEPD), C/ Jorge Juan, 6, 28001 Madrid, o a través de www.aepd.es, si considera que se han vulnerado sus derechos en materia de protección de datos.">
+      Asimismo, tiene derecho a presentar una reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong>, C/ Jorge Juan, 6, 28001 Madrid, o a través de
+      <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>, si considera que se han vulnerado sus derechos en materia de protección de datos.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2 data-en="8. Security" data-es="8. Seguridad">8. Seguridad</h2>
+    <p data-en="We rely on our form processing provider's technical and organisational security measures — including encryption in transit and at rest, access controls, and firewall protection — to safeguard the data submitted through our contact form. No method of transmission or storage is completely secure, and we cannot guarantee absolute security."
+       data-es="Confiamos en las medidas técnicas y organizativas de seguridad de nuestro proveedor de procesamiento de formularios —incluyendo cifrado en tránsito y en reposo, controles de acceso y protección mediante cortafuegos— para proteger los datos enviados a través de nuestro formulario de contacto. Ningún método de transmisión o almacenamiento es completamente seguro, por lo que no podemos garantizar una seguridad absoluta.">
+      Confiamos en las medidas técnicas y organizativas de seguridad de nuestro proveedor de procesamiento de formularios —incluyendo cifrado en tránsito y en reposo, controles de acceso y protección mediante cortafuegos— para proteger los datos enviados a través de nuestro formulario de contacto. Ningún método de transmisión o almacenamiento es completamente seguro, por lo que no podemos garantizar una seguridad absoluta.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2 data-en="9. Changes to this policy" data-es="9. Cambios en esta política">9. Cambios en esta política</h2>
+    <p data-en="We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. The date at the top of this page indicates when it was last revised. Material changes will be reflected on this page."
+       data-es="Podemos actualizar este Aviso de Privacidad periódicamente para reflejar cambios en nuestras prácticas o en los requisitos legales aplicables. La fecha indicada al inicio de esta página señala cuándo fue revisada por última vez. Los cambios sustanciales se reflejarán en esta página.">
+      Podemos actualizar este Aviso de Privacidad periódicamente para reflejar cambios en nuestras prácticas o en los requisitos legales aplicables. La fecha indicada al inicio de esta página señala cuándo fue revisada por última vez. Los cambios sustanciales se reflejarán en esta página.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2 data-en="10. Contact us" data-es="10. Contacto">10. Contacto</h2>
+    <div class="contact-block">
+      <p><strong><span class="placeholder">[Heliotide, S.L.U.]</span></strong></p>
+      <p><span class="placeholder">[Dirección registrada]</span></p>
+      <p data-en="NIF: [NIF/CIF]" data-es="NIF: [NIF/CIF]">NIF: <span class="placeholder">[NIF/CIF]</span></p>
+      <p data-en="Email: hello@heliotide.com" data-es="Correo electrónico: hello@heliotide.com">Correo electrónico: <a href="mailto:hello@heliotide.com">hello@heliotide.com</a></p>
+    </div>
+  </section>
+
+</div>
+
+<footer class="policy-footer">
+  <span data-en="© [2026] Heliotide. All rights reserved." data-es="© [2026] Heliotide. Todos los derechos reservados.">© <span class="placeholder">[2026]</span> Heliotide. Todos los derechos reservados.</span>
+</footer>
+
+<script>
+  let currentLang = 'es';
+
+  const LANG_META = {
+    sv: { flag: '🇸🇪', label: 'Svenska', title: 'Integritetspolicy – Heliotide' },
+    en: { flag: '🇬🇧', label: 'English', title: 'Privacy Policy – Heliotide' },
+    es: { flag: '🇪🇸', label: 'Español', title: 'Política de Privacidad – Heliotide' }
+  };
+
+  // No form inputs on this page — kept as an empty object so setLang() has
+  // something to iterate over without erroring, same shape as the main site.
+  const PLACEHOLDERS = { sv: {}, en: {}, es: {} };
+
+  function detectLanguage() {
+    const p = new URLSearchParams(window.location.search);
+    if (p.get('lang') === 'en') return 'en';
+    if (p.get('lang') === 'sv') return 'sv';
+    if (p.get('lang') === 'es') return 'es';
+    const langs = navigator.languages || [navigator.language || 'es'];
+    for (const l of langs) {
+      const c = l.toLowerCase();
+      if (c.startsWith('sv')) return 'sv';
+      if (c.startsWith('en')) return 'en';
+    }
+    return 'es';
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    // NOTE: Swedish text is not yet available for this page's body content.
+    // We select on [data-en] (present on every translatable element) rather
+    // than [data-sv], and fall back to the English string when the current
+    // language has no dedicated attribute — same fallback logic as the main
+    // site, just keyed off a different base attribute until Swedish copy
+    // for this page exists.
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const text = el.getAttribute('data-' + lang) || el.getAttribute('data-en') || '';
+      if (text) el.innerHTML = text;
+    });
+
+    // Section 4's sub-processor table has per-cell markup that doesn't
+    // round-trip through textContent/innerHTML swapping cleanly, so it's
+    // handled as two parallel blocks instead, toggled by visibility.
+    document.querySelectorAll('[data-lang-block]').forEach(el => {
+      const blockLang = el.getAttribute('data-lang-block');
+      const show = blockLang === lang || (lang === 'sv' && blockLang === 'en');
+      el.style.display = show ? 'block' : 'none';
+    });
+
+    const meta = LANG_META[lang];
+
+    const flagEl = document.getElementById('langCurrentFlag');
+    if (flagEl) flagEl.textContent = meta.flag;
+
+    const labelEl = document.getElementById('langCurrentLabel');
+    if (labelEl) labelEl.textContent = meta.label;
+
+    ['sv', 'en', 'es'].forEach(l => {
+      const optId = 'opt' + l.charAt(0).toUpperCase() + l.slice(1);
+      const optEl = document.getElementById(optId);
+      if (optEl) optEl.classList.toggle('active', l === lang);
+    });
+
+    document.title = meta.title;
+
+    const ph = PLACEHOLDERS[lang];
+    Object.entries(ph).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.placeholder = val;
+    });
+
+    closeLangDropdown();
+  }
+
+  function toggleLangDropdown() {
+    document.getElementById('langWrapper').classList.toggle('open');
+  }
+  function closeLangDropdown() {
+    document.getElementById('langWrapper').classList.remove('open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#langWrapper')) closeLangDropdown();
+  });
+
+  setLang(detectLanguage());
+</script>
+
+</body>
+</html>
