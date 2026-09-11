@@ -1073,12 +1073,12 @@
     .contact-email-block {
       margin-top: 36px;
       text-align: center;
-      padding: 10px;
-      background: var(--surface2);
-      border: 1px solid var(--border2);
+      padding: 0;
+      background: transparent;
+      border: none;
       border-radius: 10px;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
 
 
