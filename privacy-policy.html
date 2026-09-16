@@ -310,7 +310,7 @@
       Para operar nuestro formulario de contacto sin mantener nuestra propia infraestructura de backend, utilizamos un servicio de procesamiento de formularios de terceros, <span class="placeholder">[Web3Forms, operado por Web3Creative]</span>, que actúa como nuestro <strong>encargado del tratamiento</strong> en virtud de un Contrato de Encargado del Tratamiento que incorpora las Cláusulas Contractuales Tipo. Dicho proveedor recurre, a su vez, a subencargados que se agrupan en las siguientes categorías para prestar el servicio:
     </p>
 
-    <div data-lang-block="sv">
+    <div data-lang-block="sv" data-lang-group="subprocessor-table">
       <table class="subprocessor-table">
         <tr><th>Kategori</th><th>Ändamål</th><th>Plats</th></tr>
         <tr><td>Leverantörer av molnhosting &amp; infrastruktur</td><td>Beräkning, e-postleverans och datalagring som ligger till grund för formulärtjänsten</td><td>EU och USA</td></tr>
@@ -318,7 +318,7 @@
         <tr><td>Leverantörer av skräppost- och missbruksdetektering</td><td>Automatiserad bedömning av inskickade formulär för att blockera skräppost och missbruk (kan ta emot avsändarens IP-adress och e-postadress)</td><td>USA</td></tr>
       </table>
     </div>
-    <div data-lang-block="en">
+    <div data-lang-block="en" data-lang-group="subprocessor-table">
       <table class="subprocessor-table">
         <tr><th>Category</th><th>Purpose</th><th>Location</th></tr>
         <tr><td>Cloud hosting &amp; infrastructure providers</td><td>Compute, email delivery, and data storage underlying the form service</td><td>European Union and United States</td></tr>
@@ -326,7 +326,7 @@
         <tr><td>Spam and abuse detection providers</td><td>Automated assessment of submissions to block spam and abuse (may receive the submitter's IP address and email address)</td><td>United States</td></tr>
       </table>
     </div>
-    <div data-lang-block="es">
+    <div data-lang-block="es" data-lang-group="subprocessor-table">
       <table class="subprocessor-table">
         <tr><th>Categoría</th><th>Finalidad</th><th>Ubicación</th></tr>
         <tr><td>Proveedores de alojamiento e infraestructura en la nube</td><td>Computación, envío de correo electrónico y almacenamiento de datos que soportan el servicio de formulario</td><td>Unión Europea y Estados Unidos</td></tr>
@@ -474,10 +474,25 @@
     // Section 4's sub-processor table has per-cell markup that doesn't
     // round-trip through textContent/innerHTML swapping cleanly, so it's
     // handled as two parallel blocks instead, toggled by visibility.
+    //document.querySelectorAll('[data-lang-block]').forEach(el => {
+      //const blockLang = el.getAttribute('data-lang-block');
+      //const show = blockLang === lang || (lang === 'sv' && blockLang === 'en');
+      //el.style.display = show ? 'block' : 'none';
     document.querySelectorAll('[data-lang-block]').forEach(el => {
-      const blockLang = el.getAttribute('data-lang-block');
-      const show = blockLang === lang || (lang === 'sv' && blockLang === 'en');
-      el.style.display = show ? 'block' : 'none';
+      el.style.display = 'none';
+    });
+
+    const groups = {};
+    document.querySelectorAll('[data-lang-block]').forEach(el => {
+      const group = el.getAttribute('data-lang-group') || 'default';
+      (groups[group] ||= []).push(el);
+    });
+
+    Object.values(groups).forEach(blocks => {
+      const exact = blocks.find(el => el.getAttribute('data-lang-block') === lang);
+      const fallback = blocks.find(el => el.getAttribute('data-lang-block') === 'en');
+      const toShow = exact || fallback;
+      if (toShow) toShow.style.display = 'block';
     });
 
     const meta = LANG_META[lang];
