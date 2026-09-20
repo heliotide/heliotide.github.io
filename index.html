@@ -419,7 +419,11 @@
           </div>
 
           <div class="contact-option">
-            <form action="/kontakt" method="POST" class="contact-form">
+
+            <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+              <input type="hidden" name="access_key" value="2a8aaf2d-431b-4071-ab92-5f45fc76e85c">
+            
+
               <input type="email" name="email" id="contactEmail" class="form-input" placeholder="Din e-postadress"
                 required>
 
@@ -489,6 +493,7 @@
       <a href="#products" data-sv="Produkter" data-en="Products" data-es="Productos">Produkter</a>
       <a href="#about" data-sv="Om oss" data-en="About" data-es="Nosotros">Om oss</a>
       <a href="privacy-policy.html" data-sv="Privacy" data-en="Privacy" data-es="Privacidad">Privacy</a>
+      <a href="aviso-legal.html" id="footerAvisoLegal" style="display:none;">Aviso legal</a>
     </div>
     <!-- <div class="footer-copy" id="footerCopy">© 2026 Heliotide.</div>k -->
   </footer>
@@ -569,6 +574,12 @@
       if (footerCopy) footerCopy.textContent = meta.copy;
 
       document.title = meta.title;
+
+      // "Aviso legal" is a Spain-specific legal requirement (LSSI-CE) with
+      // no equivalent obligation in Sweden/English-speaking markets, so it
+      // only appears in the footer when Spanish is selected.
+      const avisoEl = document.getElementById('footerAvisoLegal');
+      if (avisoEl) avisoEl.style.display = (lang === 'es') ? 'inline' : 'none';
 
       // Placeholders (only relevant if signup form inputs exist in the DOM)
       const ph = PLACEHOLDERS[lang];
