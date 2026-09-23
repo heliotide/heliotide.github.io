@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aviso Legal – Heliotide</title>
+<style>
+    :root {
+      --bg:        #06101c;
+      --surface:   #0b1929;
+      --surface2:  #0f2035;
+      --surface3:  #152740;
+      --ink:       #f0f5fa;
+      --ink-mid:   #c8d8e8;
+      --ink-muted: #7a99b8;
+      --accent:    #2dd4bf;
+      --accent2:   #60c8f0;
+      --accent-dim: rgba(45,212,191,0.13);
+      --border:    rgba(255,255,255,0.09);
+      --border2:   rgba(255,255,255,0.14);
+      --radius:    5px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 68px;
+      background: rgba(6,16,28,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: inline-block;
+    }
+    .logo-name { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; }
+    .nav-back {
+      font-size: 0.85rem; font-weight: 600; color: var(--ink-mid);
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    .policy-header {
+      padding: 130px 5vw 50px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .policy-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.13em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 18px;
+    }
+    .eyebrow-line { width: 24px; height: 1.5px; background: var(--accent); flex-shrink: 0; }
+    .policy-header h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 14px;
+    }
+    .policy-updated { font-size: 0.85rem; color: var(--ink-muted); }
+
+    .policy-wrap {
+      max-width: 780px; margin: 0 auto; padding: 70px 5vw 120px;
+    }
+
+    section.policy-section { margin-bottom: 56px; }
+    .policy-section h2 {
+      font-size: 1.4rem; font-weight: 700; letter-spacing: -0.01em;
+      margin-bottom: 18px; color: var(--ink);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .policy-section h2::before {
+      content: ''; width: 18px; height: 1.5px; background: var(--accent); flex-shrink: 0;
+    }
+    .policy-section p, .policy-section li {
+      font-size: 0.95rem; color: var(--ink-mid); line-height: 1.8;
+    }
+    .policy-section p { margin-bottom: 14px; }
+    .policy-section ul { padding-left: 20px; margin-bottom: 14px; }
+    .policy-section li { margin-bottom: 8px; }
+    .policy-section a { color: var(--accent); text-decoration: none; }
+    .policy-section a:hover { color: #5eead4; text-decoration: underline; }
+
+    .placeholder {
+      color: var(--accent2);
+      background: rgba(96,200,240,0.1);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+
+    .identity-block {
+      margin-top: 12px; padding: 26px 28px; background: var(--surface2);
+      border: 1px solid var(--border2); border-radius: 10px;
+      position: relative; overflow: hidden;
+    }
+    .identity-block::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    .identity-row {
+      display: flex; justify-content: space-between; gap: 16px;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .identity-row:last-child { border-bottom: none; }
+    .identity-label {
+      color: var(--ink-muted); font-weight: 600;
+      font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+      flex-shrink: 0; padding-top: 2px;
+    }
+    .identity-value { color: var(--ink); text-align: right; }
+
+    footer.policy-footer {
+      background: #040c15; border-top: 1px solid var(--border);
+      padding: 30px 5vw; text-align: center;
+      font-size: 0.8rem; color: var(--ink-muted);
+    }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/logo_transparent.png" width="100" />
+  </a>
+  <a href="index.html" class="nav-back">← Volver a Heliotide</a>
+</nav>
+
+<div class="policy-header">
+  <div class="policy-eyebrow"><span class="eyebrow-line"></span>Legal</div>
+  <h1>Aviso Legal</h1>
+  <div class="policy-updated">Última actualización: <span class="placeholder">2026-09-23</span></div>
+</div>
+
+<div class="policy-wrap">
+
+  <section class="policy-section">
+    <h2>1. Datos identificativos del titular</h2>
+    <p>
+      En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la
+      Información y de Comercio Electrónico (LSSI-CE), se exponen a continuación los datos identificativos del
+      titular de este sitio web:
+    </p>
+
+    <div class="identity-block">
+      <div class="identity-row">
+        <span class="identity-label">Denominación social</span>
+        <span class="identity-value">Heliotide, S.L.U.</span>
+      </div>
+      <div class="identity-row">
+        <span class="identity-label">NIF</span>
+        <span class="identity-value">B26730382</span>
+      </div>
+      <div class="identity-row">
+        <span class="identity-label">Domicilio social</span>
+        <span class="identity-value">Calle Las Pitas, 6, 35100 San Bartolomé de Tirajana, Las Palmas, España</span>
+      </div>
+      <div class="identity-row">
+        <span class="identity-label">Registro Mercantil</span>
+        <span class="identity-value">Registro Mercantil de Las Palmas</span>
+      </div>
+      <div class="identity-row">
+        <span class="identity-label">Sección</span>
+        <span class="identity-value">8</span>
+      </div>
+      <div class="identity-row">
+        <span class="identity-label">Hoja</span>
+        <span class="identity-value">GC-5942</span>
+      </div>
+      <div class="identity-row">
+        <span class="identity-label">Folio</span>
+        <span class="identity-value">112</span>
+      </div>
+      <div class="identity-row">
+        <span class="identity-label">Inscripción</span>
+        <span class="identity-value">1</span>
+      </div>
+      <div class="identity-row">
+        <span class="identity-label">Correo electrónico</span>
+        <span class="identity-value"><a href="mailto:hello@heliotide.com">hello@heliotide.com</a></span>
+      </div>
+      <div class="identity-row">
+        <span class="identity-label">Sitio web</span>
+        <span class="identity-value">www.heliotide.com</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="policy-section">
+    <h2>2. Objeto</h2>
+    <p>
+      El presente aviso legal regula el acceso y uso del sitio web www.heliotide.com (en adelante, el "Sitio
+      Web"), a través del cual Heliotide, S.L.U. (en adelante, "Heliotide") ofrece información sobre sus
+      servicios de consultoría y gestión de entornos en la nube, con especialización en Microsoft Azure,
+      Microsoft 365 y Entra ID, incluyendo optimización de costes (FinOps), arquitectura y seguridad en la
+      nube, y desarrollo sobre Azure DevOps.
+    </p>
+    <p>
+      La navegación por el Sitio Web atribuye la condición de usuario del mismo (en adelante, el "Usuario") e
+      implica la aceptación plena de todas las condiciones incluidas en este Aviso Legal.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2>3. Condiciones de uso</h2>
+    <p>
+      El Usuario se compromete a hacer un uso adecuado y lícito del Sitio Web, así como de sus contenidos,
+      conforme a la legislación aplicable, el presente Aviso Legal, la moral y buenas costumbres generalmente
+      aceptadas y el orden público. Queda prohibido el uso del Sitio Web con fines ilícitos o lesivos, o que de
+      cualquier forma puedan causar perjuicio o impedir el normal funcionamiento del Sitio Web.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2>4. Propiedad intelectual e industrial</h2>
+    <p>
+      Todos los contenidos del Sitio Web, incluyendo, sin carácter exhaustivo, textos, fotografías, gráficos,
+      imágenes, iconos, tecnología, software, enlaces y demás contenidos audiovisuales o sonoros, así como su
+      diseño gráfico y códigos fuente, son propiedad intelectual de Heliotide o de terceros que han autorizado
+      su uso, sin que puedan entenderse cedidos al Usuario ninguno de los derechos de explotación reconocidos
+      por la normativa vigente en materia de propiedad intelectual e industrial sobre los mismos.
+    </p>
+    <p>
+      El nombre "Heliotide" y su logotipo son marcas cuya titularidad corresponde a Heliotide o a sus
+      licenciantes. Queda prohibida su reproducción, distribución o transformación sin autorización previa y
+      por escrito.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2>5. Exclusión de responsabilidad</h2>
+    <p>
+      Heliotide no se hace responsable de los daños y perjuicios que pudieran derivarse de interferencias,
+      omisiones, interrupciones, virus informáticos, averías telefónicas o desconexiones en el funcionamiento
+      operativo del Sitio Web, ni de retrasos o bloqueos causados por deficiencias o sobrecargas en las líneas
+      telefónicas, en el sistema de Internet o en otros sistemas electrónicos.
+    </p>
+    <p>
+      Heliotide se reserva el derecho a modificar, sin previo aviso, la información contenida en el Sitio Web,
+      así como su configuración y presentación.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2>6. Enlaces</h2>
+    <p>
+      En caso de que el Sitio Web contenga enlaces a otros sitios web de terceros, Heliotide no ejercerá
+      ningún tipo de control sobre dichos sitios y contenidos. Heliotide no asumirá responsabilidad alguna por
+      los contenidos de enlaces pertenecientes a terceros, ni garantizará la disponibilidad técnica, calidad,
+      fiabilidad, exactitud, amplitud, veracidad, validez o constitucionalidad de cualquier material o
+      información contenida en dichos enlaces.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2>7. Protección de datos</h2>
+    <p>
+      El tratamiento de los datos personales facilitados a través del Sitio Web se rige por lo dispuesto en
+      nuestra <a href="privacy-policy.html">Política de Privacidad</a>, la cual forma parte integrante del
+      presente Aviso Legal.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2>8. Legislación aplicable y jurisdicción</h2>
+    <p>
+      Las presentes condiciones se rigen por la legislación española. Para la resolución de cualquier
+      controversia que pudiera derivarse del acceso o uso del Sitio Web, Heliotide y el Usuario se someten a
+      los juzgados y tribunales que resulten competentes conforme a la normativa aplicable, y, en el caso de
+      los consumidores, a los que correspondan según su domicilio.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h2>9. Modificaciones</h2>
+    <p>
+      Heliotide se reserva el derecho a modificar el presente Aviso Legal para adaptarlo a novedades
+      legislativas o cambios en su actividad. La fecha indicada al inicio de esta página señala cuándo fue
+      revisado por última vez.
+    </p>
+  </section>
+
+</div>
+
+<footer class="policy-footer">
+  © 2026 Heliotide, S.L.U. Todos los derechos reservados.
+</footer>
+
+</body>
+</html>
