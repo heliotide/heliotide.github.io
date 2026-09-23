@@ -13,6 +13,7 @@
     rel="stylesheet" />
 
   <link href="heliotide.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -394,28 +395,29 @@
   <section id="contact">
     <div class="contact-inner">
       <div class="reveal">
-        <!-- <p class="section-label" data-sv="Kontakt" data-en="Contact" data-es="Contacto">Kontakt</p> -->
         <h2 class="section-title">
-          <!-- <span data-sv="Kontakta oss" data-en="Let's talk" data-es="Hablemos">Låt oss</span><br /> -->
-          <span data-sv="Hör av dig" data-en="Let's talk" data-es="Hablemos">Låt oss</span><br />
+          <span data-sv="Hör av dig" data-en="Let's talk" data-es="Hablemos">Hör av dig</span><br />
         </h2>
-        <p class="section-body" data-sv="Skriv några rader så svarar vi så fort vi kan! Inga nyhetsbrev, vi lovar."
-          data-en="Send an email and we'll get back to you as soon as possible! No newsletters, we promise."
-          data-es="¡Mándanos un correo electrónico y te responderemos lo antes posible! Nada de newsletters, lo prometemos.">
-          Dra iväg ett mail och berätta lite kort om din situation så kollar vi om vi kan hjälpa dig.
+        <!-- a little something for the scrapers
+          <a href="mailto:info@heliotide.com>info@heliotide.com</a>
+        -->
+        <p class="section-body">
+          <span data-sv="Skriv några rader till" 
+                data-en="Send an email to" 
+                data-es="¡Mándanos un correo a">
+              </span>
+          <span class="contact-email-address">Loading...</span>
+          <span data-sv="eller använd kontaktformuläret nedan så svarar vi så snabbt vi kan!" 
+                data-en="or use the contact form below and we'll get back to you as soon as possible!" 
+                data-es="o usa el formulario de contacto abajo y te responderemos lo antes posible!">messa</span>
         </p>
-
+        
+        
         <div class="contact-options">
 
-          <div class="contact-option">
-            <div class="contact-email-block">
-              <a href="mailto:hello@heliotide.com" class="contact-email-address">hello@heliotide.com</a>
-              <!-- <a href="mailto:hello@heliotide.com" class="contact-email-address">hello@heliotide.com</a> -->
-            </div>
-          </div>
 
           <div class="or-divider">
-            <span data-sv="eller" data-en="or" data-es="o">eller</span>
+            <!-- <span data-sv="eller" data-en="or" data-es="o">eller</span> -->
           </div>
 
           <div class="contact-option">
@@ -492,12 +494,13 @@
       <a href="#services" data-sv="Tjänster" data-en="Services" data-es="Servicios">Tjänster</a>
       <a href="#products" data-sv="Produkter" data-en="Products" data-es="Productos">Produkter</a>
       <a href="#about" data-sv="Om oss" data-en="About" data-es="Nosotros">Om oss</a>
-      <a href="privacy-policy.html" data-sv="Privacy" data-en="Privacy" data-es="Privacidad">Privacy</a>
+      <a href="privacy-policy.html" data-sv="Integritetspolicy" data-en="Privacy" data-es="Privacidad">Privacy</a>
       <a href="aviso-legal.html" id="footerAvisoLegal" style="display:none;">Aviso legal</a>
     </div>
     <!-- <div class="footer-copy" id="footerCopy">© 2026 Heliotide.</div>k -->
   </footer>
 
+  <script src="shared-scripts.js"></script>
   <script>
     let currentLang = 'sv';
 
@@ -509,23 +512,14 @@
 
     const PLACEHOLDERS = {
       sv: {
-        signupName: 'Anna Svensson',
-        signupCompany: 'Företaget AB',
-        signupEmail: 'anna@foretaget.se',
         contactEmail: 'Din e-postadress',
         contactMessage: 'Ditt meddelande'
       },
       en: {
-        signupName: 'Anna Svensson',
-        signupCompany: 'Company Ltd',
-        signupEmail: 'anna@company.com',
         contactEmail: 'Your email address',
         contactMessage: 'Your message'
       },
       es: {
-        signupName: 'Ana García',
-        signupCompany: 'Empresa S.L.',
-        signupEmail: 'ana@empresa.es',
         contactEmail: 'Tu dirección de correo',
         contactMessage: 'Tu mensaje'
       }
@@ -552,7 +546,8 @@
       // Update all translatable elements
       document.querySelectorAll('[data-sv]').forEach(el => {
         const text = el.getAttribute('data-' + lang) || el.getAttribute('data-en') || '';
-        if (text) el.textContent = text;
+        if (text) el.innerHTML = text;
+        // if (text) el.textContent = text;
       });
 
       // Update dropdown UI
@@ -581,7 +576,7 @@
       const avisoEl = document.getElementById('footerAvisoLegal');
       if (avisoEl) avisoEl.style.display = (lang === 'es') ? 'inline' : 'none';
 
-      // Placeholders (only relevant if signup form inputs exist in the DOM)
+      // Placeholder language changer used by the contact form
       const ph = PLACEHOLDERS[lang];
       Object.entries(ph).forEach(([id, val]) => {
         const el = document.getElementById(id);
@@ -600,13 +595,6 @@
     document.addEventListener('click', e => {
       if (!e.target.closest('#langWrapper')) closeLangDropdown();
     });
-
-    function handleSignup() {
-      const email = document.getElementById('signupEmail').value.trim();
-      if (!email || !email.includes('@')) { document.getElementById('signupEmail').focus(); return; }
-      document.getElementById('signupFormWrap').style.display = 'none';
-      document.getElementById('signupSuccess').classList.add('show');
-    }
 
     function toggleMenu() {
       document.getElementById('mobileMenu').classList.toggle('open');
