@@ -1,0 +1,333 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Azure Cost Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  /* Layout: left-aligned hero with a sample findings report beside it, then a plain reading column of offer sections. Sun (amber) is the single accent mark, teal carries actions. */
+  :root {
+    --bg: #F2F6F7;
+    --surface: #FFFFFF;
+    --fg: #0E2433;
+    --muted: #4D6573;
+    --line: #D3DFE4;
+    --accent: #0B7A7C;
+    --on-accent: #FFFFFF;
+    --sun: #E8A33D;
+    --panel: #0E2433;
+    --panel-fg: #E6EFF2;
+    --panel-muted: #9DB4BF;
+    --panel-line: #274657;
+    --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0A1822;
+      --surface: #102431;
+      --fg: #E6EFF2;
+      --muted: #9DB4BF;
+      --line: #23404F;
+      --accent: #3CC4C0;
+      --on-accent: #062022;
+      --sun: #F0B64F;
+      --panel: #12303F;
+      --panel-fg: #E6EFF2;
+      --panel-muted: #9DB4BF;
+      --panel-line: #2B4D5E;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0A1822;
+    --surface: #102431;
+    --fg: #E6EFF2;
+    --muted: #9DB4BF;
+    --line: #23404F;
+    --accent: #3CC4C0;
+    --on-accent: #062022;
+    --sun: #F0B64F;
+    --panel: #12303F;
+    --panel-fg: #E6EFF2;
+    --panel-muted: #9DB4BF;
+    --panel-line: #2B4D5E;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+    padding-block: 0 48px;
+    padding-inline: clamp(16px, 5vw, 56px);
+  }
+  .wrap { max-width: 1080px; margin-inline: auto; }
+  h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+  p { margin: 0; }
+  a { color: var(--accent); }
+  a:focus-visible, summary:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; border-radius: 4px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  /* header */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px; border-bottom: 1px solid var(--line); }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--fg); text-decoration: none; }
+  .sun { width: 14px; height: 14px; border-radius: 50%; background: var(--sun); box-shadow: 0 0 0 4px color-mix(in srgb, var(--sun) 28%, transparent); }
+  .btn { display: inline-block; background: var(--accent); color: var(--on-accent); font-weight: 600; font-size: 16px; padding: 12px 20px; border-radius: 6px; text-decoration: none; }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.ghost { background: transparent; color: var(--fg); border: 1.5px solid var(--line); }
+  .btn.ghost:hover { border-color: var(--accent); filter: none; }
+
+  /* hero */
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(28px, 5vw, 64px); align-items: center; padding-block: clamp(36px, 7vw, 88px); }
+  .hero h1 { font-size: clamp(40px, 6.4vw, 52px); margin-block: 14px 20px; }
+  .hero .lede { font-size: 19px; color: var(--muted); max-width: 34em; }
+  .hero .lede strong { color: var(--fg); font-weight: 600; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  .report { background: var(--panel); color: var(--panel-fg); border-radius: 10px; padding: 20px; min-width: 0; }
+  .report-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding-bottom: 14px; border-bottom: 1px solid var(--panel-line); font-family: var(--font-mono); font-size: 12.5px; color: var(--panel-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+  .table-scroll { overflow-x: auto; }
+  .report table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 440px; }
+  .report th { text-align: left; font-weight: 500; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--panel-muted); padding: 12px 10px 8px 0; }
+  .report td { padding: 10px 10px 10px 0; border-top: 1px solid var(--panel-line); vertical-align: top; }
+  .report th:last-child, .report td:last-child { text-align: right; padding-right: 0; }
+  .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .effort { font-family: var(--font-mono); font-size: 12.5px; color: var(--panel-muted); white-space: nowrap; }
+  .report tfoot td { border-top: 2px solid var(--sun); font-weight: 600; padding-top: 12px; }
+  .report .note { margin-top: 14px; font-size: 13px; color: var(--panel-muted); }
+
+  /* sections */
+  section { padding-block: clamp(36px, 6vw, 72px); border-top: 1px solid var(--line); }
+  section > .wrap > h2 { font-size: clamp(28px, 4vw, 40px); margin-bottom: 12px; }
+  .section-lede { color: var(--muted); max-width: 40em; margin-bottom: 32px; }
+
+  .deliver { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 28px 36px; }
+  .deliver h3 { font-size: 20px; margin-bottom: 6px; }
+  .deliver p { color: var(--muted); font-size: 16px; }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; max-width: 46em; }
+  .steps li { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 4px 16px; padding-block: 20px; border-top: 1px solid var(--line); }
+  .steps li:first-child { border-top: 0; padding-top: 0; }
+  .steps .n { font-family: var(--font-mono); font-size: 15px; color: var(--accent); padding-top: 4px; }
+  .steps h3 { font-size: 20px; margin-bottom: 4px; }
+  .steps p { color: var(--muted); font-size: 16px; }
+  .when { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .finds { columns: 2 280px; column-gap: 40px; list-style: none; padding: 0; margin: 0; max-width: 46em; }
+  .finds li { break-inside: avoid; padding-block: 10px; border-top: 1px solid var(--line); font-size: 16px; }
+  .finds b { font-weight: 600; }
+  .finds span { color: var(--muted); }
+
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px 48px; }
+  .two h3 { font-size: 20px; margin-bottom: 10px; }
+  .two ul { margin: 0; padding-left: 1.1em; color: var(--muted); font-size: 16px; }
+  .two li { padding-block: 3px; }
+
+  .price { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: clamp(20px, 4vw, 32px); max-width: 46em; }
+  .price h3 { font-size: 24px; margin-bottom: 8px; }
+  .price p + p { margin-top: 10px; }
+  .price p { color: var(--muted); }
+  .price p strong { color: var(--fg); }
+
+  details { border-top: 1px solid var(--line); padding-block: 16px; max-width: 46em; }
+  details:last-of-type { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; font-weight: 600; font-size: 17px; list-style-position: outside; }
+  details p { color: var(--muted); margin-top: 10px; font-size: 16px; }
+
+  .cta { text-align: left; }
+  .cta h2 { margin-bottom: 12px; }
+  .cta p { color: var(--muted); max-width: 36em; margin-bottom: 24px; }
+
+  footer { border-top: 1px solid var(--line); padding-top: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; color: var(--muted); font-size: 14px; }
+  footer a { color: var(--muted); }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 480px) {
+    body { font-size: 16px; }
+    .steps li { grid-template-columns: 36px minmax(0, 1fr); }
+    .btn { width: 100%; text-align: center; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a href="#" class="nav-logo">
+      <img src="images/logo_transparent.png" width="100" />
+    </a>
+    <a class="btn" href="https://www.heliotide.com/#contact" target="_blank" rel="noopener">Kontakta oss</a>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div>
+        <h1>Kostnadsgenomgång av er Azure-miljö</h1>
+        <p class="lede">Vi går igenom er miljö och tar fram en konkret lista på åtgärder och uppskattad arbetsinsats för att få ner kostnaderna. </p>
+        <div class="actions">
+          <a class="btn" href="https://www.heliotide.com/#contact" target="_blank" rel="noopener">Boka ett 20-minuterssamtal</a>
+          <a class="btn ghost" href="#vad-ni-far">Se vad ni får</a>
+        </div>
+      </div>
+
+      <div class="report" role="group" aria-label="Exempel på en rapport från Azure Cost Check">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Fynd</th><th>Insats</th><th>Besparing</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Besparingsplan saknas för produktionsmiljö</td><td class="effort">Medel</td><td class="num">171 600</td></tr>
+              <tr><td>Dev/test-VM:ar körs dygnet runt</td><td class="effort">Låg</td><td class="num">141 600</td></tr>
+              <tr><td>Överdimensionerade virtuella maskiner</td><td class="effort">Medel</td><td class="num">114 000</td></tr>
+              <tr><td>Azure Hybrid Benefit inte aktiverat</td><td class="effort">Låg</td><td class="num">80 400</td></tr>
+              <tr><td>Oanvända managed disks och IP-adresser</td><td class="effort">Låg</td><td class="num">50 400</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><td colspan="2">Totalt</td><td class="num">558 000</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="note">Exempeldata som visar rapportens upplägg, besparingar per år i SEK</p>
+      </div>
+    </div>
+
+    <section id="vad-ni-far">
+      <div class="wrap">
+        <h2>Det här kan ni få</h2>
+        <p class="section-lede">En behovsanpassad genomgång av hela eller delar av er Azuremiljö med konkreta besparingsåtgärder. </p>
+        <div class="deliver">
+          <div>
+            <h3>Prioriterad åtgärdslista</h3>
+            <p>Varje fynd har uppskattad besparing per månad, insats och risk, sorterat så att det bästa kommer först.</p>
+          </div>
+          <div>
+            <h3>Var pengarna tar vägen</h3>
+            <p>Kostnaden uppdelad per prenumeration, resursgrupp och tjänst, så att det går att tydligare se vad som driver kostnader och fördela dem vid behov. </p>
+          </div>
+          <div>
+            <h3>Förslag på ansvar och budget</h3>
+            <p>Taggning, budgetar och aviseringar som gör att en kostnadsökning upptäcks i god tid.</p>
+          </div>
+          <div>
+            <h3>Genomgång med er</h3>
+            <p>Vi går igenom resultatet tillsammans med relevanta stakeholders inom IT och ev Finance för att prioritera åtgärderna. </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Så går det till</h2>
+        <p class="section-lede">Typiskt förlopp nedan, men vi anpassar upplägget efter ert nuläge och vad som är mest prioriterat.</p>
+        <ol class="steps">
+          <li>
+            <span class="n">1</span>
+            <div><h3>Kort startmöte</h3><p>20-30 minuter. Vi går igenom hur ni använder Azure idag och vad som oroar er mest.</p></div>
+          </li>
+          <li>
+            <span class="n">2</span>
+            <div><h3>Läsåtkomst</h3><p>Ni ger oss läsbehörighet till kostnadsdata (vanligen Reader och Cost Management Reader). Vi kan inte ändra något i er miljö.</p></div>
+          </li>
+          <li>
+            <span class="n">3</span>
+            <div><h3>Analys</h3><p>Vi går igenom kostnader, användning och inköpsmodeller och prövar varje fynd mot hur miljön faktiskt används.</p></div>
+          </li>
+          <li>
+            <span class="n">4</span>
+            <div><h3>Rapport och genomgång</h3><p>Ni får rapporten och en genomgång. Därefter bestämmer ni själva om ni genomför åtgärderna själva eller med vår hjälp.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Vad vi brukar hitta</h2>
+        <p class="section-lede">Samma mönster återkommer i många Azure-miljöer.</p>
+        <ul class="finds">
+          <li><b>Reservationer och Savings Plans.</b> <span>Stabil baslast som betalas till fullt pris.</span></li>
+          <li><b>Dev/test som aldrig stängs av.</b> <span>Maskiner som kör nätter och helger utan att någon använder dem.</span></li>
+          <li><b>Överdimensionerade resurser.</b> <span>VM:ar, databaser och App Service-planer som är större än belastningen kräver.</span></li>
+          <li><b>Azure Hybrid Benefit.</b> <span>Licenser ni redan äger som inte används vid prissättningen.</span></li>
+          <li><b>Föräldralösa resurser.</b> <span>Diskar, IP-adresser och ögonblicksbilder kvar efter borttagna maskiner.</span></li>
+          <li><b>Loggar och lagring.</b> <span>Log Analytics och lagringsnivåer som växer utan att någon bestämt det.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap two">
+        <div>
+          <h3>Passar er om</h3>
+          <ul>
+            <li>Azure-fakturan har vuxit och ingen riktigt vet varför.</li>
+            <li>Ni saknar en tydlig ägare av molnkostnaderna.</li>
+            <li>Ekonomi och IT vill ha bättre underlag eller kunna nyckla ut kostnader på avdelningar eller produkter.</li>
+            <li>Ni vill ha ett underlag innan ni väljer verktyg eller förhandlar.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Pris</h2>
+        <div class="price">
+          <h3>Fast pris avtalas innan vi börjar</h3>
+          <p>Ni vet kostnaden i förväg och betalar inget extra om analysen tar längre tid än planerat. Första samtalet är såklart kostnadsfritt. </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Efter genomgången</h2>
+        <p class="section-lede">Vi kan hjälpa er sätta upp processer och mekanismer som håller kostnaderna under kontroll, och även ta hand om löpande förvaltning och kostnadskontroll av Azure och Microsoft 365, men det är ett separat val och ingen del av genomgången.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Vanliga frågor</h2>
+        <details>
+          <summary>Behöver vi ge er tillgång till vår miljö?</summary>
+          <p>Ja, men bara läsbehörighet till kostnads- och användningsdata. Vi kan inte ändra, stänga av eller ta bort något.</p>
+        </details>
+        <details>
+          <summary>Hur mycket kan vi spara?</summary>
+          <p>Det beror på miljön och går inte att svara på ärligt innan vi sett den. Rapporten anger belopp per fynd, och ni avgör själva vad som är värt att genomföra.</p>
+        </details>
+        <details>
+          <summary>Vem gör jobbet?</summary>
+          <p>Heliotide grundades av tekniker med över tjugo års erfarenhet av Microsoftmiljöer. Analysen görs av personer som förstår både den tekniska arkitekturen och ekonomin bakom fakturan.</p>
+        </details>
+        <details>
+          <summary>Måste vi genomföra åtgärderna med er?</summary>
+          <p>Nej. Rapporten är skriven så att ert eget team kan genomföra den. Vi hjälper gärna till, men det är ert val.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="wrap">
+        <h2>Börja med ett samtal</h2>
+        <p>Vi tar ett samtal på 20-30 minuter för att se om ömsesidigt intresse finns för att gå vidare och se om vi kan hjälpa er på ett bra sätt.</p>
+        <a class="btn" href="https://www.heliotide.com/#contact" target="_blank" rel="noopener">Kontakta oss</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Heliotide hjälper dig få kontroll på din Azure-miljö.</span>
+    <span><a href="https://www.heliotide.com" target="_blank" rel="noopener">heliotide.com</a> · <a href="https://www.heliotide.com/privacy-policy.html" target="_blank" rel="noopener">Integritet</a></span>
+  </footer>
+</div>
+
+</body></html>
