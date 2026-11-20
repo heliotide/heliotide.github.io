@@ -3,7 +3,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
 <style>
-  /* Layout: one centered compose form, narrow column, counter and recipient line under the textarea. */
+  /* Layout: language dropdown in the top-right corner, then one narrow centered compose form. */
   :root {
     --bg: #f4f6f8;
     --surface: #ffffff;
@@ -49,13 +49,19 @@
     font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.5;
-    padding-block: 2.5rem;
+    padding-block: 1rem 2.5rem;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
 
+  .topbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+  }
+
   main {
-    max-width: 32rem;
+    max-width: 26rem;
     margin-inline: auto;
     min-width: 0;
   }
@@ -68,6 +74,64 @@
     text-wrap: balance;
   }
 
+  /* Language dropdown */
+  .lang { position: relative; }
+
+  .flag {
+    width: 22px;
+    height: 15px;
+    flex: none;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px var(--line);
+  }
+
+  #lang-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.375rem 0.625rem;
+    cursor: pointer;
+  }
+  #lang-btn:hover { border-color: var(--muted); }
+  #lang-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #lang-btn .chev { width: 10px; height: 10px; color: var(--muted); }
+
+  #lang-list {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 4px);
+    z-index: 5;
+    min-width: 100%;
+    margin: 0;
+    padding: 0.25rem;
+    list-style: none;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+  }
+  #lang-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.4375rem 0.625rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  #lang-list li:hover { background: var(--bg); }
+  #lang-list li:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; background: var(--bg); }
+  #lang-list li[aria-selected="true"] { font-weight: 600; }
+
+  /* Compose form */
   form {
     background: var(--surface);
     border: 1px solid var(--line);
@@ -118,7 +182,7 @@
 
   #recipients strong { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
 
-  button {
+  #send {
     align-self: flex-start;
     font: inherit;
     font-weight: 600;
@@ -129,9 +193,9 @@
     padding: 0.625rem 1.25rem;
     cursor: pointer;
   }
-  button:hover:not(:disabled) { filter: brightness(1.08); }
-  button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
-  button:disabled { opacity: 0.45; cursor: not-allowed; }
+  #send:hover:not(:disabled) { filter: brightness(1.08); }
+  #send:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  #send:disabled { opacity: 0.45; cursor: not-allowed; }
 
   #status {
     margin: 0;
@@ -141,58 +205,237 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    button { transition: filter 0.15s ease; }
+    #send { transition: filter 0.15s ease; }
   }
 </style>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="flag-sv" viewBox="0 0 16 10" preserveAspectRatio="xMidYMid slice">
+      <rect width="16" height="10" fill="#006AA7"/>
+      <rect x="5" width="2" height="10" fill="#FECC02"/>
+      <rect y="4" width="16" height="2" fill="#FECC02"/>
+    </symbol>
+    <symbol id="flag-fi" viewBox="0 0 18 11" preserveAspectRatio="xMidYMid slice">
+      <rect width="18" height="11" fill="#FFFFFF"/>
+      <rect x="5" width="3" height="11" fill="#003580"/>
+      <rect y="4" width="18" height="3" fill="#003580"/>
+    </symbol>
+    <symbol id="flag-en" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice">
+      <clipPath id="uj-clip"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
+      <rect width="60" height="30" fill="#012169"/>
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#FFFFFF" stroke-width="6"/>
+      <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uj-clip)" stroke="#C8102E" stroke-width="4"/>
+      <path d="M30,0 V30 M0,15 H60" stroke="#FFFFFF" stroke-width="10"/>
+      <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="topbar">
+  <div class="lang" id="lang">
+    <button id="lang-btn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="lang-list">
+      <svg class="flag" id="lang-flag" aria-hidden="true"><use href="#flag-en"/></svg>
+      <span id="lang-code">EN</span>
+      <svg class="chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5 L5 7 L8.5 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <ul id="lang-list" role="listbox" tabindex="-1" hidden>
+      <li role="option" tabindex="-1" data-lang="en" aria-selected="true"><svg class="flag" aria-hidden="true"><use href="#flag-en"/></svg>English</li>
+      <li role="option" tabindex="-1" data-lang="sv" aria-selected="false"><svg class="flag" aria-hidden="true"><use href="#flag-sv"/></svg>Svenska</li>
+      <li role="option" tabindex="-1" data-lang="fi" aria-selected="false"><svg class="flag" aria-hidden="true"><use href="#flag-fi"/></svg>Suomi</li>
+    </ul>
+  </div>
+</div>
+
 <main>
-  <h1>SMS incident report</h1>
+  <h1 id="t-heading">SMS incident report</h1>
   <form id="compose" novalidate>
-    <label for="message">Message</label>
-    <textarea id="message" maxlength="160" placeholder="Type your message here"></textarea>
+    <label for="message" id="t-label">Message</label>
+    <textarea id="message" maxlength="160"></textarea>
     <div class="meta">
-      <span id="counter">160 characters remaining</span>
-      <span id="recipients">This message will go to <strong>27</strong> recipients</span>
+      <span id="counter"></span>
+      <span id="recipients"></span>
     </div>
-    <button id="send" type="submit" disabled>Send</button>
+    <button id="send" type="submit" disabled></button>
     <p id="status" role="status" aria-live="polite"></p>
   </form>
 </main>
 
 <script>
-  const MAX = 160;
-  const RECIPIENTS = 27; // replace with the live count from your backend
+(function () {
+  var MAX = 160;
+  var RECIPIENTS = 27; // replace with the live count from your backend
 
-  const box = document.getElementById("message");
-  const counter = document.getElementById("counter");
-  const recipients = document.getElementById("recipients");
-  const send = document.getElementById("send");
-  const status = document.getElementById("status");
-  const form = document.getElementById("compose");
+  var T = {
+    en: {
+      code: "EN",
+      language: "Language",
+      heading: "SMS incident report",
+      label: "Message",
+      placeholder: "Type your message here",
+      counterOne: "{n} character remaining",
+      counterMany: "{n} characters remaining",
+      recipientsOne: "This message will go to {n} recipient",
+      recipientsMany: "This message will go to {n} recipients",
+      send: "Send",
+      sent: "Demo only. Nothing was sent. A real version would send this to {n} recipients."
+    },
+    sv: {
+      code: "SV",
+      language: "Språk",
+      heading: "SMS-incidentrapport",
+      label: "Meddelande",
+      placeholder: "Skriv ditt meddelande här",
+      counterOne: "{n} tecken kvar",
+      counterMany: "{n} tecken kvar",
+      recipientsOne: "Meddelandet skickas till {n} mottagare",
+      recipientsMany: "Meddelandet skickas till {n} mottagare",
+      send: "Skicka",
+      sent: "Endast demo. Inget skickades. En riktig version skulle skicka detta till {n} mottagare."
+    },
+    fi: {
+      code: "FI",
+      language: "Kieli",
+      heading: "SMS-häiriöilmoitus",
+      label: "Viesti",
+      placeholder: "Kirjoita viestisi tähän",
+      counterOne: "{n} merkki jäljellä",
+      counterMany: "{n} merkkiä jäljellä",
+      recipientsOne: "Viesti lähetetään {n} vastaanottajalle",
+      recipientsMany: "Viesti lähetetään {n} vastaanottajalle",
+      send: "Lähetä",
+      sent: "Vain demo. Mitään ei lähetetty. Oikea versio lähettäisi tämän {n} vastaanottajalle."
+    }
+  };
+  var LANGS = ["en", "sv", "fi"];
+  var lang = "en";
 
-  recipients.innerHTML =
-    "This message will go to <strong>" + RECIPIENTS + "</strong> recipient" +
-    (RECIPIENTS === 1 ? "" : "s");
+  var box = document.getElementById("message");
+  var counter = document.getElementById("counter");
+  var recipients = document.getElementById("recipients");
+  var send = document.getElementById("send");
+  var statusEl = document.getElementById("status");
+  var form = document.getElementById("compose");
+  var heading = document.getElementById("t-heading");
+  var label = document.getElementById("t-label");
 
-  function update() {
-    const remaining = MAX - box.value.length;
-    counter.textContent = remaining + " character" + (remaining === 1 ? "" : "s") + " remaining";
-    counter.className = remaining === 0 ? "none" : remaining <= 20 ? "low" : "";
-    send.disabled = box.value.trim().length === 0;
-    status.textContent = "";
+  var langRoot = document.getElementById("lang");
+  var langBtn = document.getElementById("lang-btn");
+  var langList = document.getElementById("lang-list");
+  var langFlag = document.getElementById("lang-flag");
+  var langCode = document.getElementById("lang-code");
+  var options = Array.prototype.slice.call(langList.querySelectorAll("li"));
+
+  function detectLanguage() {
+    try {
+      var saved = localStorage.getItem("sms-lang");
+      if (LANGS.indexOf(saved) !== -1) return saved;
+    } catch (e) {}
+    var prefs = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language || "en"];
+    for (var i = 0; i < prefs.length; i++) {
+      var p = String(prefs[i]).toLowerCase().slice(0, 2);
+      if (LANGS.indexOf(p) !== -1) return p;
+    }
+    return "en";
   }
 
-  box.addEventListener("input", update);
+  function renderCounter() {
+    var t = T[lang];
+    var remaining = MAX - box.value.length;
+    counter.textContent = (remaining === 1 ? t.counterOne : t.counterMany).replace("{n}", remaining);
+    counter.className = remaining === 0 ? "none" : remaining <= 20 ? "low" : "";
+  }
+
+  function renderRecipients() {
+    var t = T[lang];
+    var tpl = RECIPIENTS === 1 ? t.recipientsOne : t.recipientsMany;
+    recipients.innerHTML = tpl.replace("{n}", "<strong>" + RECIPIENTS + "</strong>");
+  }
+
+  function applyLanguage(next) {
+    lang = next;
+    var t = T[lang];
+    document.documentElement.lang = lang;
+    heading.textContent = t.heading;
+    label.textContent = t.label;
+    box.placeholder = t.placeholder;
+    send.textContent = t.send;
+    langBtn.setAttribute("aria-label", t.language);
+    langList.setAttribute("aria-label", t.language);
+    langCode.textContent = t.code;
+    langFlag.querySelector("use").setAttribute("href", "#flag-" + lang);
+    options.forEach(function (li) {
+      li.setAttribute("aria-selected", li.getAttribute("data-lang") === lang ? "true" : "false");
+    });
+    renderCounter();
+    renderRecipients();
+    statusEl.textContent = "";
+  }
+
+  function updateInput() {
+    renderCounter();
+    send.disabled = box.value.trim().length === 0;
+    statusEl.textContent = "";
+  }
+
+  /* Dropdown behavior */
+  function openList() {
+    langList.hidden = false;
+    langBtn.setAttribute("aria-expanded", "true");
+    var selected = langList.querySelector('[aria-selected="true"]') || options[0];
+    selected.focus();
+  }
+  function closeList(returnFocus) {
+    langList.hidden = true;
+    langBtn.setAttribute("aria-expanded", "false");
+    if (returnFocus) langBtn.focus();
+  }
+  function choose(li) {
+    var next = li.getAttribute("data-lang");
+    try { localStorage.setItem("sms-lang", next); } catch (e) {}
+    applyLanguage(next);
+    closeList(true);
+  }
+
+  langBtn.addEventListener("click", function () {
+    if (langList.hidden) openList(); else closeList(false);
+  });
+  langBtn.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (langList.hidden) openList();
+    }
+  });
+  options.forEach(function (li) {
+    li.addEventListener("click", function () { choose(li); });
+  });
+  langList.addEventListener("keydown", function (e) {
+    var i = options.indexOf(document.activeElement);
+    if (e.key === "ArrowDown") { e.preventDefault(); options[(i + 1) % options.length].focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); options[(i - 1 + options.length) % options.length].focus(); }
+    else if (e.key === "Home") { e.preventDefault(); options[0].focus(); }
+    else if (e.key === "End") { e.preventDefault(); options[options.length - 1].focus(); }
+    else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (i >= 0) choose(options[i]); }
+    else if (e.key === "Escape") { e.preventDefault(); closeList(true); }
+    else if (e.key === "Tab") { closeList(false); }
+  });
+  document.addEventListener("click", function (e) {
+    if (!langRoot.contains(e.target)) closeList(false);
+  });
+
+  box.addEventListener("input", updateInput);
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     if (box.value.trim().length === 0) return;
-    status.textContent =
-      "Demo only. Nothing was sent. A real version would send this to " +
-      RECIPIENTS + " recipients.";
+    statusEl.textContent = T[lang].sent.replace("{n}", RECIPIENTS);
   });
 
-  update();
+  applyLanguage(detectLanguage());
+  updateInput();
+})();
 </script>
 
 </body></html>
